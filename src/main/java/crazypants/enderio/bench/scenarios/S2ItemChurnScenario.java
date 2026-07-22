@@ -13,7 +13,8 @@ import crazypants.enderio.conduit.item.ItemConduitNetwork;
  */
 public class S2ItemChurnScenario extends S2ItemScenario {
 
-    private static final int CHURN_INTERVAL = 100;
+    // Every measured tick pays the resort, so the median (not just p99) reflects the churn cost.
+    private static final int CHURN_INTERVAL = 1;
 
     @Override
     public String id() {

@@ -6,6 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import crazypants.enderio.bench.BenchScenario;
 import crazypants.enderio.bench.StructureBuilder;
+import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.ItemConduit;
 
@@ -72,8 +73,12 @@ public class S2ItemScenario implements BenchScenario {
                 churnAnchor = conduit;
             }
             if (i % 10 < 3) {
-                // This cell has a chest directly above it -- exercise priority/round-robin on a
-                // subset of the chest-facing conduits.
+                // This cell has a chest directly above it. 2 of every 3 chest connections become
+                // insert targets (OUTPUT); the rest keep the extract-mode default, so
+                // updateInsertOrder builds real Target lists and runs the BFS distance flood.
+                if (priorityCounter % 3 != 0) {
+                    conduit.setConnectionMode(ForgeDirection.UP, ConnectionMode.OUTPUT);
+                }
                 conduit.setOutputPriority(ForgeDirection.UP, priorityCounter % 5);
                 if (priorityCounter % 2 == 0) {
                     conduit.setRoundRobinEnabled(ForgeDirection.UP, true);
