@@ -7,6 +7,8 @@ import java.util.List;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import crazypants.enderio.bench.BenchHarness;
+import crazypants.enderio.bench.BenchTiming;
 
 public class ConduitNetworkTickHandler {
 
@@ -57,7 +59,13 @@ public class ConduitNetworkTickHandler {
         }
         listeners.clear();
         for (AbstractConduitNetwork<?, ?> cn : networks.keySet()) {
-            cn.doNetworkTick();
+            if (BenchHarness.ENABLED) {
+                long t0 = System.nanoTime();
+                cn.doNetworkTick();
+                BenchTiming.record(cn.getClass(), System.nanoTime() - t0);
+            } else {
+                cn.doNetworkTick();
+            }
         }
     }
 }

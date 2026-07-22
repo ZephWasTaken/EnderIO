@@ -91,6 +91,7 @@ public class CommonProxy {
     public void onServerStarted(FMLServerStartedEvent event) {
         HyperCubeRegister.load();
         ServerChannelRegister.load();
+        crazypants.enderio.bench.BenchHarness.onServerStarted(event); // bench/harness only — no-op unless -Denderio.bench is set
     }
 
     public void onServerStopped(FMLServerStoppedEvent event) {
